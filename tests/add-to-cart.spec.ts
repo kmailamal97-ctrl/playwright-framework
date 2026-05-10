@@ -1,3 +1,4 @@
+//git test
 import { test } from '../fixtures/test-fixtures';
 import { ProductPage } from '../pages/ProductPage';
 import { CartPage } from '../pages/CartPage';

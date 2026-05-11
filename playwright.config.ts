@@ -10,10 +10,9 @@ export default defineConfig({
   workers: 2, // ممكن تزيديها حسب جهازك
 
   reporter: [
-    ['html'],        // تقرير HTML
-    ['list'],  
+    ['html'], // تقرير HTML
+    ['list'], // output بالترمينال
     ['allure-playwright']
-      // output بالترمينال
   ],
 
   use: {
@@ -23,15 +22,16 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'on-first-retry',
-  }
-  ,projects: [
-  {
-    name: 'chromium',
-    use: { browserName: 'chromium' }
   },
-  {
-    name: 'firefox',
-    use: { browserName: 'firefox' }
-  }
-]
+
+  projects: [
+    {
+      name: 'chromium',
+      use: { browserName: 'chromium' }
+    },
+    {
+      name: 'firefox',
+      use: { browserName: 'firefox' }
+    }
+  ]
 });

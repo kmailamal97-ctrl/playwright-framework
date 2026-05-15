@@ -1,16 +1,32 @@
+import { expect, Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { expect } from '@playwright/test';
 
 export class CartPage extends BasePage {
 
-  async openCart() {
-    await this.click('#cartur');
+  readonly placeOrderButton: Locator;
+
+  constructor(page: Page) {
+    super(page);
+
+    this.placeOrderButton =
+      page.getByRole('button', { name: 'Place Order' });
   }
 
- async verifyProductExists(product: string) {
+  productInCart(productName: string): Locator {
 
-  await expect(
-    this.page.getByRole('cell', { name: product }).first()
-  ).toBeVisible();
-}
+    return this.page.locator('tr', {
+      hasText: productName
+    });
+  }
+
+  async verifyProductInCart(productName: string) {
+
+    await expect(
+      this.productInCart(productName)
+    ).toBeVisible();
+  }
+
+  async placeOrder() {
+    await this.click(this.placeOrderButton);
+  }
 }

@@ -1,17 +1,20 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { testData } from '../utils/test-data';
+import { test } from '../fixtures/testFixtures';
 
-test('User can login successfully', async ({ page }) => {
+import { users } from '../test-data/users';
 
-  const loginPage = new LoginPage(page);
+test('Login Successfully', async ({
+  homePage,
+  loginPage
+}) => {
 
-  await loginPage.openWebsite();
+  await homePage.open();
+
   await loginPage.login(
-    testData.user.username,
-    testData.user.password
+    users.validUser.username,
+    users.validUser.password
   );
 
-  await expect(page.locator('#nameofuser'))
-    .toContainText(testData.user.username);
+  await loginPage.verifyLoginSuccess(
+    users.validUser.username
+  );
 });

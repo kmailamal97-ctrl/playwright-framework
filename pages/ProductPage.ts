@@ -1,23 +1,26 @@
+import { Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { AlertHelper } from '../helpers/alertHelper';
 
 export class ProductPage extends BasePage {
 
-  async selectFirstProduct() {
+  readonly addToCartButton: Locator;
 
-    await this.page.waitForSelector('.hrefch');
+  private alertHelper: AlertHelper;
 
-    await this.page.locator('.hrefch').first().click();
+  constructor(page: Page) {
+    super(page);
+
+    this.addToCartButton =
+      page.getByRole('link', { name: 'Add to cart' });
+
+    this.alertHelper = new AlertHelper(page);
   }
 
   async addToCart() {
 
-    this.page.once('dialog', async dialog => {
-      await dialog.accept();
-    });
+    await this.alertHelper.acceptAlert();
 
-    await this.click('text=Add to cart');
-
-    // 👇 مهم جدًا
-    await this.page.waitForTimeout(2000);
+    await this.click(this.addToCartButton);
   }
 }

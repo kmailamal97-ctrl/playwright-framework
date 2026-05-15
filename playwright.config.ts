@@ -1,26 +1,32 @@
 import { defineConfig } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
 
   timeout: 30000,
 
-  retries: 1, // مهم للاستقرار في CI
+  retries: 1,
 
-  workers: 2, // ممكن تزيديها حسب جهازك
+  workers: 2,
 
   reporter: [
-    ['html'], // تقرير HTML
-    ['list'], // output بالترمينال
+    ['html'],
+    ['list'],
     ['allure-playwright']
   ],
 
   use: {
-    baseURL: 'https://www.demoblaze.com/',
+    baseURL: process.env.BASE_URL,
+
     headless: true,
 
     screenshot: 'only-on-failure',
+
     video: 'retain-on-failure',
+
     trace: 'on-first-retry',
   },
 
@@ -29,9 +35,9 @@ export default defineConfig({
       name: 'chromium',
       use: { browserName: 'chromium' }
     },
-    {
-      name: 'firefox',
-      use: { browserName: 'firefox' }
-    }
+   // {
+     // name: 'firefox',
+      //use: { browserName: 'firefox' }
+    //}
   ]
 });

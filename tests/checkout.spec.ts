@@ -1,22 +1,32 @@
-import { test } from '../fixtures/test-fixtures';
-import { ProductPage } from '../pages/ProductPage';
-import { CartPage } from '../pages/CartPage';
-import { CheckoutPage } from '../pages/CheckoutPage';
+import { test } from '../fixtures/testFixtures';
 
-test('User can place order', async ({ loggedInPage }) => {
+import { CartHelper } from '../helpers/cartHelper';
 
-  const productPage = new ProductPage(loggedInPage);
-  const cartPage = new CartPage(loggedInPage);
-  const checkoutPage = new CheckoutPage(loggedInPage);
+import { generateOrderData }
+  from '../utils/test-data';
 
-  await productPage.selectFirstProduct();
-  await productPage.addToCart();
+test('Complete Checkout Process', async ({
+  page,
+  homePage,
+  cartPage,
+  checkoutPage
+}) => {
 
-  await cartPage.openCart();
+  const cartHelper = new CartHelper(page);
 
-  await checkoutPage.placeOrder();
+  const productName = 'Samsung galaxy s6';
 
-  await checkoutPage.fillOrderForm('Amal', 'card123');
+  const orderData = generateOrderData();
 
-  await checkoutPage.confirmOrder();
+  await homePage.open();
+
+  await cartHelper.addProductToCart(productName);
+
+  await cartPage.placeOrder();
+
+  await checkoutPage.fillCheckoutForm(orderData);
+
+  await checkoutPage.purchase();
+
+  await checkoutPage.verifyPurchaseSuccess();
 });
